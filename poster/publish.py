@@ -168,7 +168,7 @@ def run(cfg, state, notion, li, now, log=print):
                        "Look at your LinkedIn profile.\n\n"
                        "- It is there: set the row's Status to Posted in Notion.\n"
                        "- It is not there: change the row's Status to something else and back to "
-                       "Scheduled. The robot then tries again.")
+                       f"{cfg['notion']['ready_status']}. The robot then tries again.")
         except LinkedInError as e:
             if e.login_problem:
                 state.get("token", {}).pop("checked_at", None)  # check the login again next run

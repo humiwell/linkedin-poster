@@ -30,7 +30,8 @@ notion:
   status_property: "Status"
   media_property: "Cover"
   # Only rows with this status are posted. After a successful post it becomes the second one.
-  ready_status: "Scheduled"
+  # Rows marked "Scheduled" are ones you scheduled on LinkedIn by hand: the robot never touches them.
+  ready_status: "Image ready"
   posted_status: "Posted"
   # The caption is the code block under the heading that contains this word, inside the row.
   caption_heading: "Caption"

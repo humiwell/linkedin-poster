@@ -9,7 +9,8 @@ First time here? Follow [SETUP.md](SETUP.md).
 ## How it works
 
 1. **Every 15 minutes** the robot wakes up (Actions tab, "LinkedIn robot").
-2. It reads every Notion row with Status **Scheduled**.
+2. It reads every Notion row with Status **Image ready**. Rows marked **Scheduled** are ones you
+   scheduled on LinkedIn by hand, so the robot never touches them.
 3. A row is due when its **Post date** has arrived and the UK time is 12:00 or later.
 4. For a due row it takes:
    - the **caption**: the grey code block under the "Caption (copy into LinkedIn)" heading inside the row,
@@ -31,8 +32,8 @@ GitHub sometimes starts runs a few minutes late, so a post can land up to about 
 
 ## Your weekly job
 
-Nothing, if the rows are ready. To hold a post back, change its Status away from Scheduled.
-To let one go out, set Status to **Scheduled** and give it a **Post date**.
+Nothing, if the rows are ready. A row goes out when its Status is **Image ready** and it has a
+**Post date**. To hold a post back, change its Status to anything else (Idea, Drafted or Scheduled).
 
 ## Everyday controls (all in `config.yml`)
 
@@ -64,7 +65,7 @@ or in the GitHub phone app.
 | LinkedIn login runs out on ... | 7 days or fewer left | Click the link in the issue. Posting still works until that date |
 | LinkedIn login has run out | The 60 days are over | Click the link in the issue. Nothing posts until you do |
 | LinkedIn login is not valid | LinkedIn cancelled the login (for example after a password change) | Click the link in the issue |
-| Skipped ...: too late | A Scheduled row was more than 6 hours late | Already posted by hand? Set Status to Posted. Still want it? Give it a new Post date |
+| Skipped ...: too late | An Image ready row was more than 6 hours late | Already posted by hand? Set Status to Posted. Still want it? Give it a new Post date |
 | Could not post ... | Failed 3 times | Read the error, fix the row in Notion. Any change to the row makes the robot try again |
 | Check LinkedIn: ... may or may not have posted | The post was sent, but LinkedIn gave no clear answer | Look at your profile. The issue says what to do in each case |
 | Cannot read Notion | The Notion key or the connection is wrong | See [SETUP.md](SETUP.md), part 2 |

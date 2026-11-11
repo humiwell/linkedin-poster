@@ -110,5 +110,5 @@ The fourth secret, `TOKEN_KEY`, was already made for you when the repo was creat
    exact Name and `POST`. That row is published for real and marked Posted.
 4. **Go live.** In `config.yml`, change `dry_run: true` to `dry_run: false`.
 
-Before going live, check Notion for rows that are Scheduled but were already posted by hand.
-Set those to Posted. (Rows more than 6 hours late are skipped anyway, and an issue tells you.)
+The robot only posts rows with Status **Image ready**. Rows you scheduled on LinkedIn by hand
+should say **Scheduled** (or Posted), so the robot leaves them alone and nothing goes out twice.

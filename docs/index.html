@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>LinkedIn login</title>
+<style>
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: #f4f2ee; color: #1d2226;
+         margin: 0; padding: 16px; display: flex; min-height: 100vh; align-items: center; justify-content: center; }
+  main { background: #fff; border-radius: 12px; padding: 28px; max-width: 460px; width: 100%;
+         box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+  h1 { font-size: 22px; margin: 0 0 12px; }
+  p { line-height: 1.5; margin: 0 0 14px; }
+  a.button { display: block; text-align: center; background: #0a66c2; color: #fff; text-decoration: none;
+             padding: 14px; border-radius: 24px; font-weight: 600; font-size: 17px; }
+  .small { color: #666; font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title">LinkedIn login</h1>
+  <p id="text">This page finishes the LinkedIn login for the auto-poster.</p>
+  <a class="button" id="go" hidden>Finish on GitHub</a>
+  <p class="small" id="small"></p>
+</main>
+<script>
+// LinkedIn sends you here with a one-time code in the address. This page passes the code to the
+// robot by opening a ready-filled GitHub issue. The code works once, for 30 minutes, and is useless
+// without the app's secret, which only the robot has.
+(function () {
+  var q = new URLSearchParams(location.search);
+  var owner = location.hostname.split(".")[0];
+  var repo = location.pathname.split("/").filter(Boolean)[0] || "linkedin-poster";
+  var title = document.getElementById("title"), text = document.getElementById("text");
+  var go = document.getElementById("go"), small = document.getElementById("small");
+  if (q.get("error")) {
+    title.textContent = "Login was cancelled";
+    text.textContent = "LinkedIn said: " + (q.get("error_description") || q.get("error")) +
+      ". Go back to the GitHub issue and click the login link again.";
+    return;
+  }
+  var code = q.get("code");
+  if (!code) { return; }
+  var body = "code: " + code + "\n\nDo not change anything. Just press the green Create button.";
+  var url = "https://github.com/" + owner + "/" + repo + "/issues/new?title=" +
+    encodeURIComponent("LinkedIn login code") + "&body=" + encodeURIComponent(body);
+  // Take the code out of the address bar and browser history.
+  history.replaceState(null, "", location.pathname);
+  title.textContent = "Almost done";
+  text.textContent = "One more step: press the button, then press the green Create button on GitHub.";
+  go.href = url;
+  go.hidden = false;
+  small.textContent = "Sending you to GitHub in a moment...";
+  setTimeout(function () { location.href = url; }, 1500);
+})();
+</script>
+</body>
+</html>

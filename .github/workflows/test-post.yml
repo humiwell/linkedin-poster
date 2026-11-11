@@ -1,0 +1,62 @@
+# One-off tests, started by hand: Actions tab, "Test post", Run workflow.
+name: Test post
+
+on:
+  workflow_dispatch:
+    inputs:
+      step:
+        description: "check = safe, posts nothing. post = publishes ONE row for real."
+        type: choice
+        options: [check, post]
+        default: check
+      row:
+        description: "For post: the exact Name of the Notion row to publish"
+        type: string
+        default: ""
+      confirm:
+        description: "For post: type POST in capital letters"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: linkedin-robot
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run the test
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          LINKEDIN_CLIENT_ID: ${{ secrets.LINKEDIN_CLIENT_ID }}
+          LINKEDIN_CLIENT_SECRET: ${{ secrets.LINKEDIN_CLIENT_SECRET }}
+          TOKEN_KEY: ${{ secrets.TOKEN_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TEST_ROW: ${{ inputs.row }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: python -m poster test-${{ inputs.step }}
+      - name: Save progress
+        if: always()
+        run: |
+          git config user.name "linkedin-robot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state
+          if git diff --cached --quiet; then echo "Nothing to save"; exit 0; fi
+          git commit -m "Robot: update state after test"
+          for i in 1 2 3; do
+            git pull --rebase --quiet && git push --quiet && exit 0
+            sleep 10
+          done
+          exit 1

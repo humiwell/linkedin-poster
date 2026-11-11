@@ -1,0 +1,52 @@
+# LinkedIn auto-poster settings.
+# Edit this file on GitHub (pencil icon), then "Commit changes".
+# The next run (within 15 minutes) uses the new settings.
+
+# true = post nothing at all. Login reminders still run.
+paused: false
+
+# true = practice mode. The robot shows what it WOULD post, but posts nothing
+# and changes nothing in Notion. Set to false only after the test post has passed.
+dry_run: true
+
+# Posting time, UK time (summer time is handled for you).
+# Every row goes out at this time on its "Post date".
+# If a row's Post date has its own time in Notion, that time wins.
+timezone: Europe/London
+post_time: "12:00"
+
+# A row that is more than this many hours late is NOT posted (an issue tells you).
+# This stops old rows going out by surprise.
+max_late_hours: 6
+
+# If several rows are due at once, post at most this many per run.
+max_posts_per_run: 1
+
+notion:
+  # The "Wednesday Posts" database inside the "Sajjad LinkedIn" page.
+  data_source_id: "2dfef356-875b-48f6-9af7-74ac680b4be9"
+  # Column names in that database.
+  date_property: "Post date"
+  status_property: "Status"
+  media_property: "Cover"
+  # Only rows with this status are posted. After a successful post it becomes the second one.
+  ready_status: "Scheduled"
+  posted_status: "Posted"
+  # The caption is the code block under the heading that contains this word, inside the row.
+  caption_heading: "Caption"
+  # Optional: name of a URL column to save the LinkedIn post link in ("" = do not save).
+  link_property: ""
+  api_version: "2025-09-03"
+
+linkedin:
+  # Who can see the posts: PUBLIC or CONNECTIONS
+  visibility: PUBLIC
+  # LinkedIn API version, year + month. LinkedIn retires each version after about a year.
+  # If an issue says the version is too old, change this to a newer month.
+  api_version: "202610"
+  # How long to wait for LinkedIn to finish processing an image or video.
+  media_wait_seconds: 300
+
+token:
+  # Open a reminder issue this many days before the LinkedIn login runs out.
+  warn_days_before_expiry: 7

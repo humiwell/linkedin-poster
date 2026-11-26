@@ -1,6 +1,9 @@
 {
   "posts": {},
   "skipped": {},
-  "token": {},
+  "token": {
+    "checked_at": "2026-11-26T22:09:44.543376+00:00",
+    "expires_on": "2027-01-25"
+  },
   "tries": {}
 }
